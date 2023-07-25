@@ -1,46 +1,69 @@
 const saveBtn = document.getElementById("savebtn");
 const deleteBtn = document.getElementById("deletebtn");
 
+const rows = [];
+
 saveBtn.onclick = function () {
-    const name = document.getElementById("name").value;
-    const number = document.getElementById("num").value;
-
-    if (name === "" || number === "") {
-        alert("Please enter both Name and Number!");
-        return;
-    }
-
-    document.getElementById("name").value = "";
-    document.getElementById("num").value = "";
+    const nameEl = document.getElementById("name").value;
+    const numberEl = document.getElementById("num").value;
     
-    const table = document.getElementById("table");
-
-    const newRow = document.createElement('tr');
-
-    const nameCell = document.createElement('td');
-    const numCell = document.createElement('td');
-
-    nameCell.innerHTML = name;
-    nameCell.onclick = function() {
-        nameCell.classList.add('change-bg');
-    }
-    numCell.innerHTML = number;
-    numCell.onclick = function() {
-        numCell.classList.add('change-bg');
+    if (nameEl && numberEl) {
+        rows.push({name: nameEl, num: numberEl});
+        updateTable();
+    }else{
+        alert("Please enter both Name and Number!");
     }
 
-    newRow.appendChild(nameCell);
-    newRow.appendChild(numCell);
-    table.appendChild(newRow);
+    console.log(rows);
 }
 
 deleteBtn.onclick = function () {
-    const table = document.getElementById("table");
-    const lastRow = table.rows.length - 1;
-
-    if (lastRow > 0) {
-        table.deleteRow(lastRow);
+    const nameToDelete = document.getElementById('name');
+    if (rows.length > 0) {
+        for (var i=0; i<rows.length;i++) {
+            if (rows[i].name === nameToDelete.value) {
+                rows.splice(i,1);
+            }
+        }
+        updateTable();
     }else{
         alert("First add contacts to delete them!!!");
     }
+
+    console.log(rows);
+}
+
+function updateTable() {
+    
+    const nameEl = document.getElementById("name").value;
+    const numberEl = document.getElementById("num").value;
+
+    const table = document.getElementById('table');
+    table.innerHTML = "";
+
+    rows.map(each => {
+        const table = document.getElementById("table");
+
+        const newRow = document.createElement('tr');
+
+        const nameCell = document.createElement('td');
+        const numCell = document.createElement('td');
+
+        document.getElementById("name").value = "";
+        document.getElementById("num").value = "";
+
+        nameCell.innerHTML = each.name;
+        nameCell.onclick = function() {
+            nameCell.classList.add('change-bg');
+        }
+        numCell.innerHTML = each.num;
+        numCell.onclick = function() {
+            numCell.classList.add('change-bg');
+        }
+
+        newRow.appendChild(nameCell);
+        newRow.appendChild(numCell);
+        table.appendChild(newRow);
+    })
+    console.log(rows);
 }
