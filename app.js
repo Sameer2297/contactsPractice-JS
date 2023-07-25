@@ -19,17 +19,23 @@ saveBtn.onclick = function () {
 
 deleteBtn.onclick = function () {
     const nameToDelete = document.getElementById('name');
-    if (rows.length > 0) {
-        for (var i=0; i<rows.length;i++) {
-            if (rows[i].name === nameToDelete.value) {
-                rows.splice(i,1);
-            }
-        }
+    if (nameToDelete.value === "" && rows.length>0) {
+        rows.splice(rows.length-1,1);
         updateTable();
     }else{
-        alert("First add contacts to delete them!!!");
+        if (rows.length > 0) {
+            for (var i=0; i<rows.length;i++) {
+                if (rows[i].name === nameToDelete.value) {
+                    rows.splice(i,1);
+                }else{
+                    alert("Name not found!")
+                }
+            }
+            updateTable();
+        }else{
+            alert("First add contacts to delete them!!!");
+        }
     }
-
     console.log(rows);
 }
 
@@ -54,11 +60,11 @@ function updateTable() {
 
         nameCell.innerHTML = each.name;
         nameCell.onclick = function() {
-            nameCell.classList.add('change-bg');
+            nameCell.classList.toggle('change-bg');
         }
         numCell.innerHTML = each.num;
         numCell.onclick = function() {
-            numCell.classList.add('change-bg');
+            numCell.classList.toggle('change-bg');
         }
 
         newRow.appendChild(nameCell);
